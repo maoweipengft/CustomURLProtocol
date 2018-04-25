@@ -1,4 +1,3 @@
 # CustomURLProtocol
-Check the app network request.
 
-Put it in your project.
+查看APP的网络请求.
