@@ -20,12 +20,12 @@ static NSString * const URLProtocolHandledKey = @"URLProtocolHandledKey";
 
 + (BOOL)canInitWithRequest:(NSURLRequest *)request
 {
-    //只处理http和https请求
+    //Handle HTTP and HTTPS requests.
     NSString *scheme = [[request URL] scheme];
     if ( ([scheme caseInsensitiveCompare:@"http"] == NSOrderedSame ||
           [scheme caseInsensitiveCompare:@"https"] == NSOrderedSame))
     {
-        //看看是否已经处理过了，防止无限循环
+        //To prevent the circulation
         if ([NSURLProtocol propertyForKey:URLProtocolHandledKey inRequest:request]) {
             return NO;
         }
@@ -49,7 +49,7 @@ static NSString * const URLProtocolHandledKey = @"URLProtocolHandledKey";
 {
     NSMutableURLRequest *mutableReqeust = [[self request] mutableCopy];
     
-    //打标签，防止无限循环
+    //To prevent the circulation
     [NSURLProtocol setProperty:@YES forKey:URLProtocolHandledKey inRequest:mutableReqeust];
     
     self.connection = [NSURLConnection connectionWithRequest:mutableReqeust delegate:self];
@@ -69,10 +69,14 @@ static NSString * const URLProtocolHandledKey = @"URLProtocolHandledKey";
 - (void) connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
     NSMutableURLRequest *mutableReqeust = [[self request] mutableCopy];
    
-
+    NSString * body = [[ NSString alloc] initWithData:mutableReqeust.HTTPBody encoding:NSUTF8StringEncoding];
+    
+    NSString *datastr = [[ NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    
+    NSLog(@"Check network request. --- URL:%@, HTTPMethod:%@, body:%@,  data:%@",mutableReqeust.URL,mutableReqeust.HTTPMethod,body,datastr);
 
     
-    NSLog(@"监听APP网络请求 --- URL:%@, 请求方式:%@, 请求body:%@,  查看请求数据:%@",mutableReqeust.URL,mutableReqeust.HTTPMethod,[mutableReqeust.HTTPBody mj_JSONObject],[data mj_JSONObject]);
+   
     
   
     
