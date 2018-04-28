@@ -1,6 +1,6 @@
 # CustomURLProtocol
 
-查看APP的网络请求.
+监控APP的网络请求.
 
 在AppDelegate里面注册.
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
